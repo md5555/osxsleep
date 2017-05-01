@@ -24,7 +24,10 @@ Persistent<Function> * callback;
 v8::Isolate* isolate;
  
 io_connect_t root_port; // a reference to the Root Power Domain IOService
-
+IONotificationPortRef  notifyPortRef;
+io_object_t            notifierObject;
+void*                  refCon;
+ 
 // callback that runs the javascript in main thread
 static void Callback(int number)
 {
@@ -96,6 +99,24 @@ MySleepCallBack( void * refCon, io_service_t service, natural_t messageType, voi
     }
 }
 
+void Stop(const v8::FunctionCallbackInfo<v8::Value>& args) {
+
+    // remove the sleep notification port from the application runloop
+    CFRunLoopRemoveSource( CFRunLoopGetCurrent(),
+                           IONotificationPortGetRunLoopSource(notifyPortRef),
+                           kCFRunLoopCommonModes );
+ 
+    // deregister for system sleep notifications
+    IODeregisterForSystemPower( &notifierObject );
+ 
+    // IORegisterForSystemPower implicitly opens the Root Power Domain IOService
+    // so we close it here
+    IOServiceClose( root_port );
+ 
+    // destroy the notification port allocated by IORegisterForSystemPower
+    IONotificationPortDestroy( notifyPortRef );
+}
+
 void Start(const v8::FunctionCallbackInfo<v8::Value>& args) {
 
     isolate = args.GetIsolate();
@@ -103,14 +124,7 @@ void Start(const v8::FunctionCallbackInfo<v8::Value>& args) {
     Local<Function> cb = Local<Function>::Cast(args[0]);
     callback = new Persistent<Function>(isolate, cb);
 
-    // notification port allocated by IORegisterForSystemPower
-    IONotificationPortRef  notifyPortRef;
- 
-    // notifier object, used to deregister later
-    io_object_t            notifierObject;
-   // this parameter is passed to the callback
-    void*                  refCon;
- 
+
     // register to receive system sleep notifications
  
     root_port = IORegisterForSystemPower( refCon, &notifyPortRef, MySleepCallBack, &notifierObject );
@@ -129,6 +143,9 @@ Handle<Value> Initialize(Handle<Object> target)
 {
     target->Set(String::NewFromUtf8(Isolate::GetCurrent(), "start"),
         FunctionTemplate::New(Isolate::GetCurrent(), Start)->GetFunction());
+
+    target->Set(String::NewFromUtf8(Isolate::GetCurrent(), "stop"),
+        FunctionTemplate::New(Isolate::GetCurrent(), Stop)->GetFunction());
 
     return True(Isolate::GetCurrent());
 }
