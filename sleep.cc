@@ -63,9 +63,6 @@ MySleepCallBack( void * refCon, io_service_t service, natural_t messageType, voi
                 seconds then go to sleep.
             */
  
-            //Uncomment to cancel idle sleep
-            //IOCancelPowerChange( root_port, (long)messageArgument );
-            // we will allow idle sleep
             IOAllowPowerChange( root_port, (long)messageArgument );
             break;
  
@@ -85,11 +82,12 @@ MySleepCallBack( void * refCon, io_service_t service, natural_t messageType, voi
  
         case kIOMessageSystemWillPowerOn:
             //System has started the wake up process...
+	    Callback(1);
             break;
  
         case kIOMessageSystemHasPoweredOn:
             //System has finished waking up...
-	    Callback(1);
+	    Callback(2);
         break;
  
         default:
