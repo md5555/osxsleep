@@ -19,10 +19,9 @@
     "darwin"
   ],
   "keywords": [
-    "audio",
-    "sound",
-    "streaming",
+    "device",
+    "power",
     "osx",
-    "chromecast"
+    "sleep"
   ]
 }
