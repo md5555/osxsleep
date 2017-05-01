@@ -1,5 +1,9 @@
 ## osxsleep
 
+osxsleep allows to monitor macOS device's sleep state from Node.
+
+Example usage:
+
 ```sh
 
   const osxsleep = require('osxsleep');

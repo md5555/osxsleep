@@ -1,7 +1,11 @@
 {
   "name": "osxsleep",
   "version": "0.0.1",
-  "author": "Milosz Derezynski",
+  "author": {
+    "name": "Milosz Derezynski",
+    "email": "mderezynski@gmail.com"
+  },
+
   "description": "Allows to monitor macOS device sleep from Node",
   "dependencies": {
     "nan": "~2.3.2"
