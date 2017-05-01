@@ -6,6 +6,10 @@
     "email": "mderezynski@gmail.com"
   },
   "description": "Allows to monitor macOS device sleep from Node",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/md5555/osxsleep.git"
+  },
   "dependencies": {
     "nan": "~2.3.2"
   },
