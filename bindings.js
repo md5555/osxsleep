@@ -53,39 +53,41 @@ function bindings (opts) {
   }
   opts.__proto__ = defaults
 
-  // Get the module root
-  if (!opts.module_root) {
-    opts.module_root = exports.getRoot(exports.getFileName())
-  }
+  var roots = [ process.cwd(), process.cwd() + "/node_modules/" + opts.bindings + "/" ];
 
   // Ensure the given bindings name ends with .node
   if (path.extname(opts.bindings) != '.node') {
     opts.bindings += '.node'
   }
 
-  var tries = []
-    , i = 0
-    , l = opts.try.length
-    , n
-    , b
-    , err
+  for (var k = 0; k < roots.length; k++) {
 
-  for (; i<l; i++) {
-    n = join.apply(null, opts.try[i].map(function (p) {
-      return opts[p] || p
-    }))
-    tries.push(n)
-    try {
-      b = opts.path ? require.resolve(n) : require(n)
-      if (!opts.path) {
-        b.path = n
-      }
-      return b
-    } catch (e) {
-      if (!/not find/i.test(e.message)) {
-        throw e
-      }
-    }
+          opts.module_root = roots[k];
+
+	  var tries = []
+	    , i = 0
+	    , l = opts.try.length
+	    , n
+	    , b
+	    , err
+
+	  for (; i<l; i++) {
+	    n = join.apply(null, opts.try[i].map(function (p) {
+	      return opts[p] || p
+	    }))
+	    tries.push(n)
+	    try {
+	      b = opts.path ? require.resolve(n) : require(n)
+	      if (!opts.path) {
+		b.path = n
+	      }
+	      return b
+	    } catch (e) {
+	      if (!/not find/i.test(e.message)) {
+		throw e
+	      }
+	    }
+	  }
   }
 
   err = new Error('Could not locate the bindings file. Tried:\n'
