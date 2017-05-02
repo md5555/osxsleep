@@ -11,6 +11,7 @@
     "url": "git+https://github.com/md5555/osxsleep.git"
   },
   "dependencies": {
+    "node-abi": "2.0.0",
     "bindings": "1.2.1",
     "nan": "~2.3.2"
   },
