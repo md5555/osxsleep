@@ -1,7 +1,7 @@
 {
   "targets": [
     {
-      "target_name": "osxsleep",
+      "target_name": "osxsleep_binding",
       "sources": [ "sleep.cc" 
                    ],
       "cflags": ["-Wall", "-std=c++11","-framework IOKit","-framework CoreFoundation"],

@@ -1,5 +1,5 @@
 
-exports.OSXSleep = require('bindings')('osxsleep');
+exports.OSXSleep = require('osxsleep_binding');
 
 exports.WILL_SLEEP = 0;
 exports.WILL_POWER_ON = 1;
