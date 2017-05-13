@@ -27,3 +27,5 @@ Example usage:
   osxsleep.OSXSleep.stop();
  
 ```
+
+It is *important* to call stop() in order to unregister the native IOKit sleep state monitor & resources!
