@@ -84,17 +84,33 @@ GetPowerSource(const v8::FunctionCallbackInfo<v8::Value>& args) {
 
     int src = -1;
 
-    if (source == CFSTR(kIOPMACPowerKey) == 0) {
+    CFComparisonResult result;
+
+    result = CFStringCompareWithOptions(source,
+		CFSTR(kIOPMACPowerKey), CFRangeMake(0,CFStringGetLength(source)), kCFCompareCaseInsensitive);
+
+    if (result == kCFCompareEqualTo) {
 	src = 0;
+	goto exit;
     }
-    else
-    if (source == CFSTR(kIOPMBatteryPowerKey) == 0) {
+
+    result = CFStringCompareWithOptions(source,
+		CFSTR(kIOPMBatteryPowerKey), CFRangeMake(0,CFStringGetLength(source)), kCFCompareCaseInsensitive);
+
+    if (result == kCFCompareEqualTo) {
 	src = 1;
+	goto exit;
     }
-    else
-    if (source == CFSTR(kIOPMUPSPowerKey) == 0) {
+
+    result = CFStringCompareWithOptions(source,
+		CFSTR(kIOPMUPSPowerKey), CFRangeMake(0,CFStringGetLength(source)), kCFCompareCaseInsensitive);
+
+    if (result == kCFCompareEqualTo) { 
 	src = 2;
+	goto exit;
     }
+
+    exit:
 
     CFRelease(source);	
     args.GetReturnValue().Set(Integer::New(isolate, src));
