@@ -10,6 +10,19 @@ Example usage:
    
   ...
 
+  var source = osxsleep.OSXSleep.getCurrentPowerSource();
+
+  switch(source) {
+	case osxsleep.POWER_SOURCE_AC:
+		break;
+	case osxsleep.POWER_SOURCE_BATTERY:
+		break;
+	case osxsleep.POWER_SOURCE_UPS:
+		break;
+  }
+
+  ...
+ 
   osxsleep.OSXSleep.start(function(sleepstate){
 
 	switch(sleepstate) {
