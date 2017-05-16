@@ -13,6 +13,13 @@ Example usage:
   osxsleep.OSXSleep.start(function(sleepstate){
 
 	switch(sleepstate) {
+		case osxsleep.CAN_SLEEP:
+			if (/* can sleep*/) {
+			    return true;
+			} else {
+			    return false;
+			}
+			break;
 		case osxsleep.WILL_SLEEP:
 			break;
 		case osxsleep.WILL_POWER_ON:

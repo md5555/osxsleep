@@ -31,7 +31,7 @@ void*                  refCon;
 // callback that runs the javascript in main thread
 static void Callback(int number)
 {
-    TryCatch try_catch;
+    TryCatch try_catch(isolate);
  
     // prepare arguments for the callback
     Local<Value> argv[1];
@@ -41,7 +41,27 @@ static void Callback(int number)
     callback->Get(isolate)->Call(v8::Object::New(isolate), 1, argv);
  
     if (try_catch.HasCaught()) {
-        FatalException(try_catch);
+        FatalException(isolate, try_catch);
+    }
+}
+
+// callback that runs the javascript in main thread
+static bool CallbackRvBool(int number)
+{
+    TryCatch try_catch(isolate);
+ 
+    // prepare arguments for the callback
+    Local<Value> argv[1];
+    argv[0] = Integer::New(isolate, number);
+ 
+    // call the callback and handle possible exception
+    Handle<Value> rv = callback->Get(isolate)->Call(v8::Object::New(isolate), 1, argv);
+ 
+    if (try_catch.HasCaught()) {
+        FatalException(isolate, try_catch);
+	return true;
+    } else {
+	return rv->BooleanValue();	
     }
 }
  
@@ -65,8 +85,13 @@ MySleepCallBack( void * refCon, io_service_t service, natural_t messageType, voi
                 IOAllowPowerChange or IOCancelPowerChange, the system will wait 30
                 seconds then go to sleep.
             */
+
+	    if (CallbackRvBool(3)) {
+		IOAllowPowerChange( root_port, (long)messageArgument );
+	    } else {
+		IOCancelPowerChange( root_port, (long)messageArgument );
+	    }
  
-            IOAllowPowerChange( root_port, (long)messageArgument );
             break;
  
         case kIOMessageSystemWillSleep:
