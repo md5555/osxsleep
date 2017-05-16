@@ -27,7 +27,7 @@ Example usage:
 
 	switch(sleepstate) {
 		case osxsleep.CAN_SLEEP:
-			if (/* can sleep*/) {
+			if (/* can sleep */) {
 			    return true;
 			} else {
 			    return false;
