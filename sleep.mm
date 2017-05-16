@@ -84,15 +84,15 @@ GetPowerSource(const v8::FunctionCallbackInfo<v8::Value>& args) {
 
     int src = -1;
 
-    if (source == CFSTR(kIOPMACPowerKey)) {
+    if (source == CFSTR(kIOPMACPowerKey) == 0) {
 	src = 0;
     }
     else
-    if (source == CFSTR(kIOPMBatteryPowerKey)) {
+    if (source == CFSTR(kIOPMBatteryPowerKey) == 0) {
 	src = 1;
     }
     else
-    if (source == CFSTR(kIOPMUPSPowerKey)) {
+    if (source == CFSTR(kIOPMUPSPowerKey) == 0) {
 	src = 2;
     }
 
