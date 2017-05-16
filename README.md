@@ -1,6 +1,6 @@
 ## osxsleep
 
-osxsleep allows to monitor macOS device's sleep state from Node.
+osxsleep allows to monitor macOS device's sleep state from Node; additionally, you can query the current power source.
 
 Example usage:
 
@@ -10,7 +10,7 @@ Example usage:
    
   ...
 
-  var source = osxsleep.OSXSleep.getCurrentPowerSource();
+  var source = osxsleep.OSXSleep.getPowerSource();
 
   switch(source) {
 	case osxsleep.POWER_SOURCE_AC:
