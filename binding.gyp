@@ -2,7 +2,7 @@
   "targets": [
     {
       "target_name": "osxsleep",
-      "sources": [ "sleep.cc" ],
+      "sources": [ "sleep.mm" ],
       "cflags": ["-Wall", "-std=c++11","-framework IOKit","-framework CoreFoundation"],
       "conditions": [ 
         [ "OS=='mac'", { 
